@@ -7,7 +7,8 @@ import {
   productTranslationFragment,
   saleTranslationFragment,
   shippingMethodTranslationFragment,
-  voucherTranslationFragment
+  voucherTranslationFragment,
+  menuItemTranslationFragment,
 } from "@saleor/fragments/translations";
 import makeQuery from "@saleor/hooks/makeQuery";
 import gql from "graphql-tag";
@@ -74,9 +75,9 @@ import {
   VoucherTranslationDetailsVariables
 } from "./types/VoucherTranslationDetails";
 import {
-  VoucherTranslations,
-  VoucherTranslationsVariables
-} from "./types/VoucherTranslations";
+  MenuItemTranslations,
+  MenuItemTranslationsVariables
+} from "./types/MenuItemTranslations";
 
 const categoryTranslations = gql`
   ${pageInfoFragment}
@@ -342,6 +343,39 @@ export const TypedShippingMethodTranslations = TypedQuery<
   ShippingMethodTranslationsVariables
 >(shippingMethodTranslations);
 
+const menuItemTranslations = gql`
+  ${pageInfoFragment}
+  ${menuItemTranslationFragment}
+  query MenuItemTranslations(
+    $language: LanguageCodeEnum!
+    $first: Int
+    $after: String
+    $last: Int
+    $before: String
+  ) {
+    translations(
+      kind: MENU_ITEM
+      before: $before
+      after: $after
+      first: $first
+      last: $last
+    ) {
+      edges {
+        node {
+          ...MenuItemTranslationFragment
+        }
+      }
+      pageInfo {
+        ...PageInfoFragment
+      }
+    }
+  }
+`;
+export const TypedMenuItemTranslations = TypedQuery<
+  MenuItemTranslations,
+  MenuItemTranslationsVariables
+>(menuItemTranslations);
+
 const productTranslationDetails = gql`
   ${productTranslationFragment}
   query ProductTranslationDetails($id: ID!, $language: LanguageCodeEnum!) {
@@ -448,3 +482,16 @@ export const useShippingMethodTranslationDetails = makeQuery<
   ShippingMethodTranslationDetails,
   ShippingMethodTranslationDetailsVariables
 >(shippingMethodTranslationDetails);
+
+const menuItemTranslationDetails = gql`
+  ${menuItemTranslationFragment}
+  query MenuItemTranslationDetails($id: ID!, $language: LanguageCodeEnum!) {
+    translation(kind: MENU_ITEM, id: $id) {
+      ...MenuItemTranslationFragment
+    }
+  }
+`;
+export const useMenuItemTranslationDetails = makeQuery<
+  MenuItemTranslationDetails,
+  MenuItemTranslationDetailsVariables
+>(menuItemTranslationDetails);

@@ -38,6 +38,10 @@ import {
   UpdateVoucherTranslations,
   UpdateVoucherTranslationsVariables
 } from "./types/UpdateVoucherTranslations";
+import {
+  UpdateMenuItemTranslations,
+  UpdateMenuItemTranslationsVariables
+} from "./types/UpdateMenuItemTranslations";
 
 const updateProductTranslations = gql`
   mutation UpdateProductTranslations(
@@ -319,3 +323,34 @@ export const TypedUpdateShippingMethodTranslations = TypedMutation<
   UpdateShippingMethodTranslations,
   UpdateShippingMethodTranslationsVariables
 >(updateShippingMethodTranslations);
+
+const updateMenuItemTranslations = gql`
+  mutation UpdateMenuItemTranslations(
+    $id: ID!
+    $input: NameTranslationInput!
+    $language: LanguageCodeEnum!
+  ) {
+    voucherTranslate(id: $id, input: $input, languageCode: $language) {
+      errors {
+        field
+        message
+      }
+      voucher {
+        id
+        name
+        translation(languageCode: $language) {
+          id
+          language {
+            code
+            language
+          }
+          name
+        }
+      }
+    }
+  }
+`;
+export const TypedUpdateVoucherTranslations = TypedMutation<
+  UpdateVoucherTranslations,
+  UpdateVoucherTranslationsVariables
+>(updateVoucherTranslations);

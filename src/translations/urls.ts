@@ -12,7 +12,8 @@ export enum TranslatableEntities {
   vouchers = "vouchers",
   pages = "pages",
   productTypes = "productTypes",
-  shippingMethods = "shippingMethods"
+  shippingMethods = "shippingMethods",
+  menuItems = "menuItems"
 }
 
 const translationsSection = "/translations/";

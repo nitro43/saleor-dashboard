@@ -7,11 +7,11 @@ import React from "react";
 import { useIntl } from "react-intl";
 
 import { LanguageCodeEnum } from "../../types/globalTypes";
-import TranslationsPagesPage from "../components/TranslationsMenuItemsPage";
+import TranslationsMenuItemsPage from "../components/TranslationsMenuItemsPage";
 import { TypedUpdatePageTranslations } from "../mutations";
 import { usePageTranslationDetails } from "../queries";
 import { TranslationInputFieldName } from "../types";
-import { UpdatePageTranslations } from "../types/UpdatePageTranslations";
+import { UpdateMenuItemTranslations } from "../types/UpdateMenuItemTranslations";
 import {
   languageEntitiesUrl,
   languageEntityUrl,
@@ -65,7 +65,7 @@ const TranslationsPages: React.FC<TranslationsPagesProps> = ({
   };
 
   return (
-    <TypedUpdatePageTranslations onCompleted={onUpdate}>
+    <TypedUpdateMenuItemTranslations onCompleted={onUpdate}>
       {(updateTranslations, updateTranslationsOpts) => {
         const handleSubmit = (
           fieldName: TranslationInputFieldName,
@@ -79,13 +79,13 @@ const TranslationsPages: React.FC<TranslationsPagesProps> = ({
             }
           });
         };
-        const translation = pageTranslations?.data?.translation;
+        const translation = menuItemTranslations?.data?.translation;
 
         return (
-          <TranslationsPagesPage
+          <TranslationsMenuItemsPage
             activeField={params.activeField}
             disabled={
-              pageTranslations.loading || updateTranslationsOpts.loading
+              menuItemTranslations.loading || updateTranslationsOpts.loading
             }
             languageCode={languageCode}
             languages={shop?.languages || []}
@@ -93,26 +93,26 @@ const TranslationsPages: React.FC<TranslationsPagesProps> = ({
             onBack={() =>
               navigate(
                 languageEntitiesUrl(languageCode, {
-                  tab: TranslatableEntities.pages
+                  tab: TranslatableEntities.menuItems
                 })
               )
             }
             onEdit={onEdit}
             onDiscard={onDiscard}
             onLanguageChange={lang =>
-              navigate(languageEntityUrl(lang, TranslatableEntities.pages, id))
+              navigate(languageEntityUrl(lang, TranslatableEntities.menuItems, id))
             }
             onSubmit={handleSubmit}
             data={
-              translation?.__typename === "PageTranslatableContent"
+              translation?.__typename === "MenuItemTranslatableContent"
                 ? translation
                 : null
             }
           />
         );
       }}
-    </TypedUpdatePageTranslations>
+    </TypedUpdateMenuItemTranslations>
   );
 };
-TranslationsPages.displayName = "TranslationsPages";
-export default TranslationsPages;
+TranslationsMenuItems.displayName = "TranslationsMenuItems";
+export default TranslationsMenuItems;
